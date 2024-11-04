@@ -30,7 +30,7 @@ export const createStickerIntoDB = async (payload) => {
   
 
   export const getAllStickerFromDB = async (name, page, limit) => {
-    let filter = {};
+    let filter = { isDeleted: { $ne: true } };
   
     // If a name is provided, add it to the filter object
     if (name) {
@@ -65,12 +65,13 @@ export const updateStickerIntoDB = async (StickerId, payload) => {
   
 
 export const deleteStickerFromDB = async (Id) => {
-    const isExists = await Sticker.findById(Id);
-    if (!isExists) {
-      throw new Error('Sticker not found or maybe deleted!');
-    }
-    const result = await Sticker.findByIdAndDelete(Id);
-    return result;
+    // const isExists = await Sticker.findById(Id);
+    // if (!isExists) {
+    //   throw new Error('Sticker not found or maybe deleted!');
+    // }
+    // const result = await Sticker.findByIdAndDelete(Id);
+    // return result;
+    await Sticker.findByIdAndUpdate(Id, { isDeleted: true });
 };
   
 

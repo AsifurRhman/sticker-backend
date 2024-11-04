@@ -169,8 +169,14 @@ export const getAllSticker = catchAsync(async (req, res) => {
         return sendError(res, httpStatus.NOT_FOUND, {
           message: 'Sticker not found or may be deleted.',
         });
-      }
-    const result = await deleteStickerFromDB(stickerId);
+    }
+    if (Sticker?.isDeleted) {
+      return sendError(res, httpStatus.NOT_FOUND, {
+        message:
+        "sticker is already deleted.",
+      });
+    }
+     await deleteStickerFromDB(stickerId);
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
@@ -214,6 +220,7 @@ if (!Sticker) {
   
     // Find the user by userId
     const user = await findUserById(userId);
+    //console.log(user,"user from my sticker")
     if (!user) {
       return sendError(res, httpStatus.NOT_FOUND, {
         message: 'User not found.',
@@ -257,7 +264,7 @@ if (!Sticker) {
         message: 'No stickers found. Please purchase or download.',
       });
     }
-  
+  //console.log(uniqueStickers,"uniqueStickers")
     // Return the unique stickers from both models
     sendResponse(res, {
       success: true,
