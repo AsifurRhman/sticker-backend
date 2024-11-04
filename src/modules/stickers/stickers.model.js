@@ -9,8 +9,14 @@ const StickerSchema = new Schema(
       default: { publicFileURL: "images/stickers/sticker.png", path: "public\\images\\sticker.png" },
     },
     price: { type: Number, required: true },
-    description: { type: String, required: true ,trim: true}
+    description: { type: String, required: true, trim: true },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    }
   },
+  
+  
   { timestamps: true},
 );
 
